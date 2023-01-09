@@ -127,4 +127,47 @@ insert into order_details(order_id, product_id, price, sku, quantity) value (4,7
 
 
 
+--1# cel mai vandut produs
+select name, quantity
+from products
+join order_details od on products.id = od.product_id
+order by quantity desc
+limit 1;
 
+--2# veniturile intr-un interval de ani (ex 2020-2021)
+select sum(price) as VenitLunarCurenta
+from order_details
+join orders o on o.id = order_details.order_id
+where o.order_data > 2020;
+
+--3# clientul cu cei mai multi bani cheltuiti
+select full_name, o.price, name
+from customers
+join order_details o on customers.id = o.order_id
+join products p on p.id = o.product_id
+order by o.price desc
+limit 1;
+
+--4# produsele dintr-o anumita categorie si cate sunt   NEREZOLVAT  
+select products.name as NumeProdus, count(*) as NumarProduse, c.name as NumeClasa
+from products
+join categories c on products.description = c.description
+where products.category = 'Gradina';
+
+--5# obiectele mai vechi de 2021 sa li se schimbe sku-l in '0000'
+update products
+set sku = 1000
+where create_data < '2020-09-03 12:45:13';
+
+--6# afiseaza clientii din romania, care au cumparat frigidere, alaturi de adresele lor 
+select full_name, default_shipping_adress
+from customers
+join orders o on customers.id = o.customer_id
+join order_details od on o.id = od.order_id
+where product_id = 1 and customers.country = 'Romania';
+
+--7# clientul cu cel mai scump produs cumparat
+
+--8# catalogare produse(ex 0-100 ieftin, 100-500, pretMediu, >500-scumpe)
+--9# afisare produse resigilate 
+--10# afisare nume client, produsul si unde trebuie livrat
