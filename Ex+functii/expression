@@ -1,0 +1,15 @@
+SUBSTR("SQL Tutorial", 5, 3) -- functie care ia ca parametru un atribut, 
+                             -- pozitia de start(ex 1 prima litera din cuvant), 
+                             -- numarul de caractere extrase
+substr(name,-3) -- parametru numele obiectelor din lista si un numar negativ
+                -- numarul negativ semnifica indexarea inversa
+                -- (se nuamra 3 caractere dela coada spre inceput)
+sum(kgMere)   -- suma atributulelor tuturor obiecteleor
+              -- ex sum(kgMere) as kg_Totale maria 1 ion 5 =  6 kg_totale 
+avg(kgMere)  -- media atributului dat ca parametru
+
+round() -- rotunjire a cel mai apropiat nr (ex 5.17 - 5, 5.87 - 6)
+
+group by -- grupeaza anumite obiecte in fuctie de anumite atribute (ex group by street)
+         -- in combinatie cu count(*) specifica catiidivizi fac parte dintr-un anume grup
+         -- ex street Alle 5, Marty 1, P.P.Tree 7

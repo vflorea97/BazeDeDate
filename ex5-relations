@@ -1,0 +1,54 @@
+
+    select first_name ,book_name from student
+    join book b on student.student_id = b.student_id
+-- alaturare coloane first_name si book_name
+
+select enrolment.student_id,course_id, created_at
+from enrolment
+inner join course c on enrolment.course_id = c.id
+inner join student s on enrolment.student_id = s.student_id;
+-- //alaturare coloana student_id,course_id si created_at
+
+select first_name ,book_name from student
+left join book b on student.student_id = b.student_id;
+-- in coloana din stanga sunt afisate toate obiectele
+
+select first_name,book_name
+from student
+right join book b on student.student_id = b.student_id;
+-- in coloana din dreapta sunt afisate toate obiecte
+
+select first_name
+from student
+union
+select book_name
+from book;
+-- uniune intre doua coloane de acelasi tip returnand numele distincte
+
+select first_name as AllName
+from student
+union all
+select last_name as AllName
+from student
+order by AllName;
+-- uniune intre doua coloane de acelasi tip returnand toate numele
+
+select first_name
+from student
+where student_id in (
+    select distinct student_id
+    from student
+    where student_id > 2
+    );
+--o interogare cu o subinterogare
+
+select first_name as Name
+from student
+inner join (
+    select distinct id
+    from enrolment
+    where student_id < 4
+) as ID on student_id = id
+order by Name;
+--o interogare cu o subinterogare
+    

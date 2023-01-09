@@ -1,0 +1,130 @@
+create table products(
+    id integer auto_increment primary key,
+    sku integer,
+    name text,
+    price integer,
+    weight double,
+    description text,
+    thumbnail blob,
+    image blob,
+    category text,
+    create_data timestamp,
+    stock integer
+);
+
+insert into products(sku, name, price, weight, description, thumbnail, image, category, create_data, stock)  value (1435,'Frigider',2000,20,'Frigider fara racire',null,null,'Electrocasnice mari','2020-01-03 18:03:49',12);
+insert into products(sku, name, price, weight, description, thumbnail, image, category, create_data, stock)  value (3232,'Periuta dinti',12,0.1,'Periuta electrica',null,null,'Ingrijire personala','2021-11-03 15:03:13',40);
+insert into products(sku, name, price, weight, description, thumbnail, image, category, create_data, stock)  value (4352,'Lalea in ghiveci',20,1,'Ghiveci cu 3 bulbi',null,null,'Gradina','2021-04-07 15:00:11',32);
+insert into products(sku, name, price, weight, description, thumbnail, image, category, create_data, stock)  value (1234,'Mixer',200,2,'Mixer electric',null,null,'Electrocasnice mici','2020-12-12 17:03:49',13);
+insert into products(sku, name, price, weight, description, thumbnail, image, category, create_data, stock)  value (8965,'Drujba',500,5,'Drujba electrica',null,null,'Gradina','2020-07-07 11:00:11',7);
+insert into products(sku, name, price, weight, description, thumbnail, image, category, create_data, stock)  value (1304,'Fard',20,0.1,'Fard solid',null,null,'Ingrijire personala','2020-09-03 12:45:13',30);
+insert into products(sku, name, price, weight, description, thumbnail, image, category, create_data, stock)  value (2309,'Pensula', 7, 0.1,'Pensula par de porc',null,null,'Hobby','2020-12-01 13:03:49',70);
+
+create table options(
+    id integer auto_increment primary key,
+    option_name text
+);
+
+insert into options(option_name) value ('Electric');
+insert into options(option_name) value ('Ridicare Personala');
+insert into options(option_name) value ('Resigilat');
+insert into options(option_name) value ('Garantie extinsa');
+insert into options(option_name) value ('Verde');
+
+create table product_options(
+    id integer auto_increment primary key,
+    option_id integer,
+    product_id integer,
+    foreign key (option_id) references options(id),
+    foreign key (product_id) references products(id)
+);
+
+insert into product_options(option_id, product_id) value (2,1);
+insert into product_options(option_id, product_id) value (5,2);
+insert into product_options(option_id, product_id) value (2,3);
+insert into product_options(option_id, product_id) value (1,4);
+insert into product_options(option_id, product_id) value (2,5);
+insert into product_options(option_id, product_id) value (5,6);
+insert into product_options(option_id, product_id) value (3,7);
+
+create table categories(
+    id integer auto_increment primary key,
+    name text,
+    description text,
+    thumbnail blob
+);
+
+insert into categories(name, description, thumbnail) value ('Gradina','Flori si unelte',null);
+insert into categories(name, description, thumbnail) value ('Electrocasnice mici','Electrocasnice pentru gatit',null);
+insert into categories(name, description, thumbnail) value ('Electrocasnice mari','Electrocasnice pentru bucatarie',null);
+insert into categories(name, description, thumbnail) value ('Hobby','Unelte si materiale',null);
+insert into categories(name, description, thumbnail) value ('Ingrijire personala','Flori si unelte',null);
+
+create table product_categories(
+    id integer auto_increment primary key,
+    product_id integer,
+    category_id integer,
+    foreign key (product_id) references products(id),
+    foreign key (category_id) references categories(id)
+);
+
+insert into product_categories(product_id, category_id) value (1,3);
+insert into product_categories(product_id, category_id) value (2,5);
+insert into product_categories(product_id, category_id) value (3,1);
+insert into product_categories(product_id, category_id) value (4,2);
+insert into product_categories(product_id, category_id) value (5,1);
+insert into product_categories(product_id, category_id) value (6,5);
+insert into product_categories(product_id, category_id) value (7,4);
+
+create table customers(
+    id integer auto_increment primary key,
+    email text,
+    password text,
+    full_name text,
+    billing_adress text,
+    default_shipping_adress text,
+    country text,
+    phone integer
+);
+
+insert into customers(email, password, full_name, billing_adress, default_shipping_adress, country, phone) value ('aa@gmai.com','copac','Alex Mica','Strada Perelor','Strada Perelor','Romania',072898765);
+insert into customers(email, password, full_name, billing_adress, default_shipping_adress, country, phone) value ('ll@gmai.com','PacPac','Luci Antu','Strada Lalelelor','Strada Lalelelor','Romania',072678567);
+insert into customers(email, password, full_name, billing_adress, default_shipping_adress, country, phone) value ('gg@gmai.com','aglomeratt','George Soca','Strada Castanilor','Strada Castanilor','Romania',072123432);
+insert into customers(email, password, full_name, billing_adress, default_shipping_adress, country, phone) value ('mm@gmai.com','liliacu','Mircea Pop','Strada Colonel','Strada Colonel','Romania',072345345);
+
+create table orders(
+    id integer auto_increment primary key,
+    customer_id integer,
+    ammount integer,
+    shipping_address text,
+    order_address text,
+    order_email text,
+    order_data timestamp,
+    order_status text,
+    foreign key (customer_id) references customers(id)
+);
+
+insert into orders(customer_id, ammount, shipping_address, order_address, order_email, order_data, order_status) value (1,2000,'Strada Perelor','Strada Perelor','aa@gmail.com','2022-03-01 18:00:11','Livrare');
+insert into orders(customer_id, ammount, shipping_address, order_address, order_email, order_data, order_status) value (2,300,'Strada Lalelelor','Strada Lalelelor','ll@gmail.com','2022-07-11 14:00:11','Livrare');
+insert into orders(customer_id, ammount, shipping_address, order_address, order_email, order_data, order_status) value (3,280,'Strada Castanelor','Strada Castanelor','gg@gmail.com','2022-10-11 21:17:11','Livrat');
+insert into orders(customer_id, ammount, shipping_address, order_address, order_email, order_data, order_status) value (4,1200,'Strada Colonel','Strada Colonel','mm@gmail.com','2022-12-07 00:12:11','Anulata');
+
+create table order_details(
+    id integer auto_increment primary key,
+    order_id integer,
+    product_id integer,
+    price double,
+    sku integer,
+    quantity integer,
+    foreign key (order_id) references orders(id),
+    foreign key (product_id) references products(id)
+);
+
+insert into order_details(order_id, product_id, price, sku, quantity) value (1,2,24,3232,2);
+insert into order_details(order_id, product_id, price, sku, quantity) value (2,1,2000,1435,1);
+insert into order_details(order_id, product_id, price, sku, quantity) value (3,5,1500,8965,3);
+insert into order_details(order_id, product_id, price, sku, quantity) value (4,7,70,2309,10);
+
+
+
+

@@ -1,0 +1,54 @@
+1 afisare in ordine alfabetica dupa numele de familie
+select *
+from student
+order by last_name;
+
+2 afisare in functie de varsta descrescator
+select *
+from student
+order by age desc;
+
+3 afiseaza primele 3 persoane de la catalog
+select *
+from student
+limit 3;
+
+4 afiseaza coloanele nume si prenume cu nickname-uri
+select first_name as Prenume, last_name as Nume
+from student;
+
+5 afiseaza toate departamentele fara a le repeta
+select distinct course_department
+from course;
+
+6 afiseaza cursurile care apartin de departamentul de matematica
+select course_name
+from course
+where course_department = 'Matematica';
+
+7 afiseaza cartile care au fost lansate dupa anul 2010
+select *
+from book
+where created_at > '2010-01-01 00:00:00';
+
+8 afiseaza persoanele care se incadreaza in primele 4 persoane si au peste 23 de ani
+select *
+from student
+where student_id < 5 and age > 23;
+
+9 afiseaza studentii care au varste cuprinse intre 20 si 22 de ani
+select *
+from student
+where age between 20 and 22;
+
+10 afiseaza stundetii care au prenumele Alex,Lucian si Mircea
+select *
+from student
+where first_name in ('Alex','George','Mircea');
+
+#primii 3 studenti ce sunt inscrii la cele mai multe cursurile ,nr de
+select first_name  , count(*)  as  numar from student
+JOIN enrolment e on student.student_id = e.student_id
+GROUP BY first_name
+ORDER BY numar desc  limit 3;
+

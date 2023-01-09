@@ -1,0 +1,48 @@
+select  (count(CITY)- count(distinct CITY)) from STATION; --diferenta dintre totalul oraselor totale, si totalul numerelor oraselor distincte
+
+select CITY,LENGTH(CITY) 
+from STATION 
+order by Length(CITY) asc, 
+CITY limit 1;  
+                             -- afisare nume oras si lungimea cuvantului, ordonate in fuctie de 
+                             -- lungimea cuvantului ascendent, numarul numelor afisate fiind limitate la 1,
+                             -- apoi acelasi lucru scris descendent
+
+select CITY,LENGTH(CITY) 
+from STATION 
+order by Length(CITY) desc,
+CITY limit 1;
+
+ select distinct city 
+ from station                                         -- se afiseaza nedublate, numele oraselor
+ where substr(city,1,1) in ('a','e','i','o','u');    -- care incep cu o vocala
+
+SUBSTR("SQL Tutorial", 5, 3) -- functie care ia ca parametru un atribut, pozitia de start(ex 0 prima litera din cuvant), numarul de caractere extrase
+
+select distinct city
+from station                                                             --afisare orase nedublate, care se termina in vocale
+where substr(city,length(city),length(city)) in ('a','e','i','o','u');
+
+select distinct city
+from station
+where substr(city,length(city),length(city)) in ('a','e','i','o','u') and    --afisare orase cu vocale la inceput si sfarsit
+substr(city,1,1) in ('a','e','i','o','u');
+
+select distinct(city)
+from station                                           -- afisare orase unde prima litera nu este vocala
+where substr(city,1,1) not in ('a','e','i','o','u');
+
+select name
+from students
+where marks > 75                  -- se afiseaza sudentii care au mai mult de75 de puncte
+order by substr(name,-3), id;     -- in ordine, in functie de ultimele 3 caractere din numelelor
+                                  -- daca acestea se repeta, se afizeaza in functie de id
+
+substr(name,-3) --parametru numele obiectelor din lista si un numar negativ
+                --numarul negativ semnifica indexarea inversa (se nuamra 3 caractere dela coada spre inceput)
+
+
+select name
+from employee
+where salary > 2000 and months < 10  --numele angajatului cu salariu mai mare de 2000 si 
+order by employee_id asc;            --luni de angajare mai putine de 10 luni
