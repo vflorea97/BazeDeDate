@@ -148,11 +148,16 @@ join products p on p.id = o.product_id
 order by o.price desc
 limit 1;
 
---4# produsele dintr-o anumita categorie si cate sunt   NEREZOLVAT  
-select products.name as NumeProdus, count(*) as NumarProduse, c.name as NumeClasa
+--4# produsele dintr-o anumita categorie si cate sunt 
+select category, count(*) as Number
 from products
-join categories c on products.description = c.description
-where products.category = 'Gradina';
+where category = 'Gradina'
+group by products.category
+union all
+select name, price
+from products
+where category = 'Gradina';
+
 
 --5# obiectele mai vechi de 2021 sa li se schimbe sku-l in '0000'
 update products
@@ -167,7 +172,35 @@ join order_details od on o.id = od.order_id
 where product_id = 1 and customers.country = 'Romania';
 
 --7# clientul cu cel mai scump produs cumparat
+select customers.full_name as Client, p.name as Produs, p.price as Pret
+from customers
+join orders o on customers.id = o.customer_id
+join order_details od on o.id = od.order_id
+join products p on od.product_id = p.id
+order by p.price desc
+limit 1;
 
 --8# catalogare produse(ex 0-100 ieftin, 100-500, pretMediu, >500-scumpe)
---9# afisare produse resigilate 
+select name,
+    case
+        when products.price < 100 then 'Ieftin'
+        when products.price between 100 and 500 then 'Pret Mediu'
+        when products.price >500 then 'Scump'
+end as CategoriePreturi
+from products;
+
+--9# afisaza clientii care au comenzi in livrare
+select full_name as Client, p.name
+from customers
+join orders o on customers.id = o.customer_id
+join order_details od on o.id = od.order_id
+join products p on od.product_id = p.id
+where o.order_status = 'Livrare';
+
 --10# afisare nume client, produsul si unde trebuie livrat
+select full_name as Client, p.name as Produs, substr(order_address,8,length(order_address)) as Strada
+from customers
+join orders o on customers.id = o.customer_id
+join order_details od on o.id = od.order_id
+join products p on od.product_id = p.id
+order by Strada;
