@@ -1,0 +1,74 @@
+create table student(
+    id integer auto_increment primary key,
+    first_name text,
+    last_name text,
+    email text,
+    age integer
+);
+
+insert into student(first_name, last_name, email, age) value ('Voicu','Alex','vv@gmail.com',21);
+insert into student(first_name, last_name, email, age) value ('Mirea','Anton','aa@gmail.com',22);
+insert into student(first_name, last_name, email, age) value ('Motoc','Bogdan','bb@gmail.com',18);
+insert into student(first_name, last_name, email, age) value ('Popescu','Horia','hh@gmail.com',19);
+insert into student(first_name, last_name, email, age) value ('Ion','Alin','aa@gmail.com',27);
+insert into student(first_name, last_name, email, age) value ('Nicola','Lucian','ll@gmail.com',25);
+insert into student(first_name, last_name, email, age) value ('Mica','Mircea','mm@gmail.com',20);
+
+create table student_id_card(
+    id integer auto_increment primary key,
+    student_id integer,
+    card_number integer,
+    foreign key (student_id) references student(id)
+);
+
+insert into student_id_card(student_id, card_number) value (1,453564);
+insert into student_id_card(student_id, card_number) value (2,211113);
+insert into student_id_card(student_id, card_number) value (3,666574);
+insert into student_id_card(student_id, card_number) value (4,167434);
+insert into student_id_card(student_id, card_number) value (5,655463);
+insert into student_id_card(student_id, card_number) value (6,907732);
+insert into student_id_card(student_id, card_number) value (7,323123);
+
+create table book(
+    id integer auto_increment primary key,
+    student_id integer,
+    book_name text,
+    created_at timestamp,
+    foreign key (student_id) references student(id)
+);
+
+insert into book(student_id, book_name, created_at) value (1, 'Exercitii Fizica','2012-06-07 18:00:00');
+insert into book(student_id, book_name, created_at) value (3, 'Exercitii Gramatica','2008-12-17 18:00:00');
+insert into book(student_id, book_name, created_at) value (4, 'Istoria Romaniei','2020-01-12 18:00:00');
+insert into book(student_id, book_name, created_at) value (6, 'Geografie','2017-02-11 18:00:00');
+insert into book(student_id, book_name, created_at) value (7, 'Istoria Europei','2015-08-24 18:00:00');
+
+create table course(
+    id integer auto_increment primary key,
+    name text,
+    department text
+);
+
+insert into course(name, department) value ('Crochiuri','Pictura');
+insert into course(name, department) value ('Mozaic','Pictura');
+insert into course(name, department) value ('Geometrie','Matematica');
+insert into course(name, department) value ('Algebra','Matematica');
+insert into course(name, department) value ('Crochiuri','Pictura');
+insert into course(name, department) value ('Istoria Romaniei','Istorie');
+
+create table enrolment(
+    id integer auto_increment primary key,
+    student_id integer,
+    course_id integer,
+    create_at datetime,
+    foreign key (student_id) references student(id),
+    foreign key (course_id) references course(id)
+);
+
+insert into enrolment(student_id, course_id, create_at) value (1,2,'2019-01-01');
+insert into enrolment(student_id, course_id, create_at) value (2,2,'2019-01-01');
+insert into enrolment(student_id, course_id, create_at) value (3,4,'2019-01-01');
+insert into enrolment(student_id, course_id, create_at) value (4,5,'2019-01-01');
+insert into enrolment(student_id, course_id, create_at) value (5,3,'2019-01-01');
+insert into enrolment(student_id, course_id, create_at) value (6,1,'2019-01-01');
+insert into enrolment(student_id, course_id, create_at) value (7,6,'2019-01-01');
