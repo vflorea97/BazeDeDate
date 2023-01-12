@@ -1,0 +1,131 @@
+create table student(
+    id integer auto_increment primary key,
+    first_name text,
+    last_name text,
+    email text,
+    age integer
+);
+
+insert into student(first_name, last_name, email, age) value ('Voicu','Alex','vv@gmail.com',21);
+insert into student(first_name, last_name, email, age) value ('Mirea','Anton','aa@gmail.com',22);
+insert into student(first_name, last_name, email, age) value ('Motoc','Bogdan','bb@gmail.com',18);
+insert into student(first_name, last_name, email, age) value ('Popescu','Horia','hh@gmail.com',19);
+insert into student(first_name, last_name, email, age) value ('Ion','Alin','aa@gmail.com',27);
+insert into student(first_name, last_name, email, age) value ('Nicola','Lucian','ll@gmail.com',25);
+insert into student(first_name, last_name, email, age) value ('Mica','Mircea','mm@gmail.com',20);
+
+create table student_id_card(
+    id integer auto_increment primary key,
+    student_id integer,
+    card_number integer,
+    foreign key (student_id) references student(id)
+);
+
+insert into student_id_card(student_id, card_number) value (1,453564);
+insert into student_id_card(student_id, card_number) value (2,211113);
+insert into student_id_card(student_id, card_number) value (3,666574);
+insert into student_id_card(student_id, card_number) value (4,167434);
+insert into student_id_card(student_id, card_number) value (5,655463);
+insert into student_id_card(student_id, card_number) value (6,907732);
+insert into student_id_card(student_id, card_number) value (7,323123);
+
+create table book(
+    id integer auto_increment primary key,
+    student_id integer,
+    book_name text,
+    created_at timestamp,
+    foreign key (student_id) references student(id)
+);
+
+insert into book(student_id, book_name, created_at) value (1, 'Exercitii Fizica','2012-06-07 18:00:00');
+insert into book(student_id, book_name, created_at) value (3, 'Exercitii Gramatica','2008-12-17 18:00:00');
+insert into book(student_id, book_name, created_at) value (4, 'Istoria Romaniei','2020-01-12 18:00:00');
+insert into book(student_id, book_name, created_at) value (6, 'Geografie','2017-02-11 18:00:00');
+insert into book(student_id, book_name, created_at) value (7, 'Istoria Europei','2015-08-24 18:00:00');
+
+create table course(
+    id integer auto_increment primary key,
+    name text,
+    department text
+);
+
+insert into course(name, department) value ('Crochiuri','Pictura');
+insert into course(name, department) value ('Mozaic','Pictura');
+insert into course(name, department) value ('Geometrie','Matematica');
+insert into course(name, department) value ('Algebra','Matematica');
+insert into course(name, department) value ('Crochiuri','Pictura');
+insert into course(name, department) value ('Istoria Romaniei','Istorie');
+
+create table enrolment(
+    id integer auto_increment primary key,
+    student_id integer,
+    course_id integer,
+    create_at datetime,
+    foreign key (student_id) references student(id),
+    foreign key (course_id) references course(id)
+);
+
+insert into enrolment(student_id, course_id, create_at) value (1,2,'2019-01-01');
+insert into enrolment(student_id, course_id, create_at) value (2,2,'2019-01-01');
+insert into enrolment(student_id, course_id, create_at) value (3,4,'2019-01-01');
+insert into enrolment(student_id, course_id, create_at) value (4,5,'2019-01-01');
+insert into enrolment(student_id, course_id, create_at) value (5,3,'2019-01-01');
+insert into enrolment(student_id, course_id, create_at) value (6,1,'2019-01-01');
+insert into enrolment(student_id, course_id, create_at) value (7,6,'2019-01-01');
+
+
+--1# afisare studenti care sunt inscrisi la cursuri
+select first_name, last_name, student.id
+from student
+join enrolment e on student.id = e.student_id
+where e.course_id is null;
+
+--2# afisare carti care sunt disponibile 
+select book_name
+from book
+where book.student_id is null;
+
+--3# afisare studenti care au numarul cardului par
+select first_name, last_name, sic.id
+from student
+join student_id_card sic on student.id = sic.student_id
+where sic.card_number % 2 = 0;
+
+--4# cate cursuri are fiecare departament
+select department, count(*) as numar_cursuri
+from course
+group by department;
+
+--5# afisare curs popular
+select name,count(*)
+from course
+join enrolment e on course.id = e.course_id
+group by e.course_id
+order by count(*) desc
+limit 1;
+
+--6# ordoneaza studentii alfabetic in functie de a 3-a litera din numele de familie si doar initiala
+select first_name, substr(last_name,1,1) as last_name
+from student
+order by substr(first_name,3);
+
+--7# afiseaza cursurile in ordine alfabetica care apartin studentilor peste 21 de ani
+select name, last_name
+from course
+join enrolment e on course.id = e.course_id
+join student s on s.id = e.student_id
+where s.age > 21;
+
+--8# a doua cifra din card_id este cladirea, a ramas doar o singura cladire,
+    --sterge a doua cifra din card_id
+update student_id_card
+set card_number = concat(substr(card_number,1,1),substr(card_number,3,length(card_number) - 1));
+
+--9# afisati doar numele de familie al elevilor alaturi de initiala nuelui mic in ordine alfabetica
+select first_name as Nume, substr(last_name,1,1) as Initiala
+from student
+order by Initiala;
+
+--10# calculati numarul de carti necesare, modelul fiind de 5 carti pentru fiecare departament      
+select count(distinct department) * 5 as carti_necesare
+from course;
